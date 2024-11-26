@@ -1,0 +1,13 @@
+numpy
+pandas
+matplotlib
+scipy
+yfinance
+scikit-learn
+gym
+talipp
+trendet
+ta
+seaborn
+scipy
+pandas
