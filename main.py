@@ -14,18 +14,60 @@ from datetime import timedelta
 
 start_time = time.time()
 
-# Params
-BATCH_SIZE = 10
-GAMMA = 0.7
-n_step = 3
-transaction_cost = 0.0
-initial_investment = 1000
-ReplayMemorySize = 36
-TARGET_UPDATE = 5
-n_episodes = 50
-window_size = 20
-trend_size = 72
-indicators = True
+# Core Training Parameters
+BATCH_SIZE = 128        # Number of samples per training iteration
+                      # Ideal: 32-128. Larger = more stable but slower
+                      # GPU can handle larger batches (64-256)
+
+GAMMA = 0.95           # Discount factor for future rewards (0-1)
+                      # Ideal: 0.95-0.99 for trading
+                      # Higher (0.99) for long-term strategies
+                      # Lower (0.8-0.9) for short-term trading
+
+n_step = 4            # Steps ahead for calculating returns
+                      # Ideal: 3-5 for trading
+                      # Higher (5-10) for trending markets
+                      # Lower (1-3) for volatile markets
+
+n_episodes = 200       # Number of training iterations
+                      # Ideal: 200-1000 for complex markets
+                      # Higher (500+) for more robust strategies
+                      # Current 50 is quite low for production
+
+# Memory/Update Parameters
+ReplayMemorySize = 10000 # Size of experience replay buffer
+                      # Ideal: 10000-100000
+                      # Current 36 is very low
+                      # Larger (50000+) for more stable learning
+
+TARGET_UPDATE = 15     # How often to update target network
+                      # Ideal: 10-20 episodes
+                      # Higher (15-20) for more stability
+                      # Lower (5-10) for faster adaptation
+
+# Market Parameters
+transaction_cost = 0.001 # Trading fees per transaction
+                      # Ideal: 0.001-0.003 (0.1-0.3%) for stocks
+                      # 0.0 is unrealistic - real markets have fees
+
+initial_investment = 1000 # Starting capital for backtesting
+                         # Ideal: Depends on strategy
+                         # Common: 10000-100000 for realistic testing
+
+# Data Processing Parameters
+window_size = 30      # Past timesteps to consider
+                      # Ideal: 20-50 for daily data
+                      # Higher (40-60) for longer trends
+                      # Lower (10-20) for quick responses
+
+trend_size = 72       # Size of trend patterns to detect
+                      # Ideal: 50-100 for daily data
+                      # Higher (100+) for longer patterns
+                      # Lower (30-50) for shorter patterns
+
+indicators = True     # Include technical indicators
+                      # Ideal: True for most strategies
+                      # False only if using pure price action
 
 # Data params
 ticker = 'SPY'
